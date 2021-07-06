@@ -1,0 +1,119 @@
+openapi: "3.0.0"
+info:
+  description: "Second task from Cisco. Task webservice has written in Flask."
+  version: "1.0.0"
+  title: "Cisco Python task 2"
+  contact:
+    email: "ilkma1998@gmail.com"
+    name: ": Ilkin Mammadov"
+
+servers:
+  - url: "http://127.0.0.1:8000/"
+
+tags:
+- name: "api"
+
+paths:
+  /info:
+    get:
+      tags:
+        - api
+      description: "Returns hardcoded status of `{“Receiver”: “Cisco is the best!”}"
+      
+      summary: "Returns status to enduser."
+      operationId: get_info
+      responses:
+        200:
+          description: Success
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoSuccess'
+                
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /ping:
+    post:
+      tags:
+        - api
+      description: "This route should send a GET request to that endpoint, ignoring SSL for simplicity, and return the payload of that request as the response for the route"
+      operationId: post_ping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: object
+                  example: "https://www.somesite.com"
+      responses:
+        200:
+          description: Success
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/PingSuccess'
+        400:
+          description: Invalid request from user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+components:
+  schemas:
+    InvalidRequestError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Please provide url in the request body"
+    InternalServerError:
+      type: object
+      properties:
+        Error:
+          type: string
+          example: "Internal Server Error"
+    InfoSuccess:
+      type: object
+      properties:
+        Receiver:
+          type: string
+          example: "Cisco is the best!"
+    PingSuccess:
+      type: string
+      example: "Contents of website provided in request body after bypassing SSL"
+      
